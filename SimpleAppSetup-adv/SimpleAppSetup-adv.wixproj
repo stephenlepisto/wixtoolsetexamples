@@ -1,0 +1,41 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.1">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\build\setup\x64\Debug\</OutputPath>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>
+    </DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\build\setup\x64\Release\</OutputPath>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>
+    </DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <OutputPath>..\build\setup\x86\Release\</OutputPath>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>
+    </DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <OutputPath>..\build\setup\x86\Debug\</OutputPath>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>
+    </DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="IssueWorkaround.wxi" />
+    <Content Include="Predefines.wxi" />
+    <Content Include="productVersion.wxi" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleApp\SimpleApp.vcxproj" />
+  </ItemGroup>
+</Project>

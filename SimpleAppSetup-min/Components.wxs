@@ -1,0 +1,25 @@
+<?include Predefines.wxi ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="Components" Directory="INSTALLFOLDER">
+        <Component Guid="$(var.ProductComponentGUID)">
+            <File Id="SimpleAppexe" Source="$(var.SimpleApp.TargetPath)" Checksum="yes" />
+            <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Advertise="no"
+                Icon="icon.ico" Name="$(var.Name)"
+                Description="Launch $(var.Name) application"
+                Target="[#SimpleAppexe]"
+                WorkingDirectory="INSTALLFOLDER" />
+            <Shortcut Id="UninstallProduct" Directory="ApplicationProgramsFolder" Advertise="no"
+                Icon="icon.ico"
+                Name="$(var.Name) uninstall"
+                Description="Uninstalls $(var.Name)"
+                Target="[System64Folder]msiexec.exe"
+                Arguments="/x [ProductCode]" />
+            <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
+            <RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+            <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>

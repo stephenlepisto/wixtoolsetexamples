@@ -1,0 +1,26 @@
+<?include Predefines.wxi ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <!--
+            7/26/2024 (slepisto)
+            The WixUI_Advanced dialog computes APPLICATIONFOLDER at runtime
+            but we need to define it at compile time so the Components can
+            reference the ID.
+        -->
+        <Directory Id="APPLICATIONFOLDER" Name="Anything" />
+
+        <StandardDirectory Id="ProgramMenuFolder">
+            <!--
+                slepisto:
+                This dictates the name of the folder that appears in the Start menu.
+                Since 32-bit and 64-bit versions of this application can be installed
+                at the same time, it seems simpler to gather them under a common
+                folder name so use var.StartupMenuName instead of var.Name.
+            
+                This is configurable in Predefines.wxi.
+            -->
+            <Directory Id="ApplicationProgramsFolder" Name="$(var.StartupMenuName)" />
+        </StandardDirectory>
+    </Fragment>
+</Wix>

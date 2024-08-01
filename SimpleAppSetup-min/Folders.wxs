@@ -1,0 +1,34 @@
+<?include Predefines.wxi ?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <StandardDirectory Id="ProgramFiles6432Folder">
+            <!--
+                7/25/2024 (slepisto):
+                This dictates the name of the folder where the application file
+                is stored.  32-bit and 64-bit versions end up in different root
+                folders (due to the ProgramFiles6432Folder ID above), so a
+                simplified name is okay.  So use $(var.InstallFolderName) instead
+                of !(bind.Property.ProductName).  Also, add a '\' between the
+                Manufacturer and the application folder name.
+            
+                This is configurable in Predefines.wxi.
+                
+                Note: I think bind.Property.ProductName comes from <Package Name="">.
+            -->
+            <Directory Id="INSTALLFOLDER" Name="!(bind.Property.Manufacturer)\$(var.InstallFolderName)" />
+        </StandardDirectory>
+        <StandardDirectory Id="ProgramMenuFolder">
+            <!--
+                slepisto:
+                This dictates the name of the folder that appears in the Start menu.
+                Since 32-bit and 64-bit versions of this application can be installed
+                at the same time, it seems simpler to gather them under a common
+                folder name so use var.StartupMenuName instead of var.Name.
+            
+                This is configurable in Predefines.wxi.
+            -->
+            <Directory Id="ApplicationProgramsFolder" Name="$(var.StartupMenuName)" />
+        </StandardDirectory>
+    </Fragment>
+</Wix>

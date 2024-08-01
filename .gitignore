@@ -1,0 +1,6 @@
+.vs/
+.vscode/
+build/
+obj/
+*.pdn
+*.user

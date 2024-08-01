@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    7/26/2024 (slepisto):
+    - This needs to be included in all .wxs files that reference the variables.
+    - Generated new GUIDs for ProductComponentGUID and UpgradeCode for both the
+      32-bit and 64-bit versions (total of four GUIDs).
+      
+      Note: Once set, the UpgradeCode should never change, allowing each new
+      version of the setup package to upgrade an existing package.
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <?include productVersion.wxi ?>
+
+    <!--
+        The type of the installer.  Need this to distinguish different install
+        packages and to allow each example to be installed side-by-side.  This
+        suffix needs to be applied to the SimpleApp's TargetName property as well.
+            min  (Minimal)
+            ins  (InstallDir)
+            adv  (Advanced)
+            mon  (Mondo)
+            fea  (FeatureTree)
+    -->
+    <?define InstallType = "ins"?>
+
+    <?define AppName = "$(var.SimpleApp.TargetName)-$(var.InstallType)" ?>
+    <?define Manufacturer = "Accursed Toys" ?>
+    <?if $(var.Configuration) = Debug?>
+    <?define ProgramConfig = "-Debug"?>
+    <?else?>
+    <?define ProgramConfig = ""?>
+    <?endif?>
+    <?if $(var.Platform) = x64 ?>
+    <?define PlatformInName = "-64bit"?>
+    <?define Win64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?define ProductComponentGUID = "7126D263-8807-4738-BCB4-2DFC242C6338"?>
+    <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+    <?define UpgradeCode = "2E133644-3EDB-4113-A1BA-25996CD316F4" ?>
+    <?else?>
+    <?define PlatformInName = "-32bit"?>
+    <?define Win64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?define ProductComponentGUID = "E0B34E7A-E4A0-4C13-9A34-4AD6333E1728"?>
+    <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+    <?define UpgradeCode = "1CF72359-C2E7-421B-954A-D75639D0F08B" ?>
+    <?endif?>
+
+    <!-- Complete name of the application that appears everywhere -->
+    <?define Name = "$(var.AppName)$(var.PlatformInName)$(var.ProgramConfig)"?>
+    
+    <!-- Name of the folder that appear in the Start Menu -->
+    <?define StartupMenuName = "$(var.AppName)"?>
+
+    <!-- Name of the package (used in the installer and in the Apps and Features list -->
+    <?define PackageName = "$(var.Name) $(var.ProductVersion)"?>
+
+    <!-- Name of the application folder in which the program is installed -->
+    <?define InstallFolderName = "$(var.AppName)"?>
+
+</Include>

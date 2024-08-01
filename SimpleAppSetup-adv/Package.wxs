@@ -1,0 +1,61 @@
+﻿<!--
+    7/26/2024 (slepisto):
+    - Needed to use NuGet to add WiX.Toolset.ui.wixext 5.0.1 to the
+      SimpleAppSetup-adv project.
+      
+-->
+<?include Predefines.wxi ?>
+
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <!--
+        slepisto:
+        The package name is used throughout the installer to refer to the product
+        being installed.  It is also used in the Apps and Features list of
+        installed programs.  It binds to the variable, !(bind.Property.ProductName).
+    -->
+    <Package Name="$(var.PackageName)" Manufacturer="$(var.Manufacturer)" Version="$(var.ProductVersion)" UpgradeCode="$(var.UpgradeCode)">
+        <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+        <!--
+            slepisto:
+            This makes sure the .cab file is embedded in the .msi file;
+            otherwise, the .cab file is external and must be moved around with
+            the .msi file.
+        -->
+        <Media Id="1" Cabinet="SimpleApp.cab" EmbedCab="yes" />
+
+        <ui:WixUI Id="WixUI_Advanced" />
+        <UIRef Id="WixUI_ErrorProgressText" />
+        <!--
+            Advanced dialog requires this to be defined.  It is used as the
+            name of the Program Files folder and LocalAppData folder for the
+            application.
+        -->
+        <Property Id="ApplicationFolderName" Value="$(var.Manufacturer)\$(var.InstallFolderName)" />
+        <Property Id="WixAppFolder" Value="WixPerUserFolder" />
+
+        <!-- Automatically select acceptance of license -->
+        <Property Id="LicenseAccepted" Value="1" />
+        <!--
+            slepisto:
+            Although I can use LibreOffice Writer to edit the .rtf file, it
+            apparently does not save it in a format that WiX/Windows Installer
+            can load.
+        -->
+        <WixVariable Id="WixUILicenseRtf" Value="..\res\LICENSE.rtf" />
+        <WixVariable Id="WixUIDialogBmp" Value="..\res\setup_dialogimage.bmp" />
+        <WixVariable Id="WixUIBannerBmp" Value="..\res\setup_bannerimage.bmp" />
+
+        <!--Add Icon and ARPPRODUCTICON (the installer icon). 
+            ref.: http://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/configure_arp_appearance.html -->
+        <Icon Id="icon.ico" SourceFile="..\res\SimpleApp.ico" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+        <Feature Id="Main" Title="SimpleApp">
+            <ComponentGroupRef Id="Components" />
+        </Feature>
+
+        <!-- Fixes default folder used for per-machine installs for 64-bit installs -->
+        <?include IssueWorkaround.wxi ?>
+    </Package>
+</Wix>

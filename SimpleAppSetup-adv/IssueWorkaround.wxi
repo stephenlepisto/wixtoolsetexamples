@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <!--
+        7/30/2024 (slepisto)
+        The following is a work-around for the problem of WixUI_Advanced defaulting
+        to C:\Program Files (x86) when installing a 64-bit program.  The issue
+        describing this problem is https://github.com/wixtoolset/issues/issues/5908
+        and is where I got the work-around.  Since the issue was filed in 2018
+        for WiXToolset v3.11.1 and was marked as a milestone for v4.x but was
+        never fixed, I'm applying the work-around here.
+    -->
+    <!-- ################### BEGIN WORK_AROUND ######################## -->
+    <?if $(var.Platform)=x86?>
+    <?define ProgramFilesFolder="ProgramFilesFolder" ?>
+    <?define Win64="no" ?>
+    <?define Arch="(x86)" ?>
+    <?else?>
+    <?define ProgramFilesFolder="ProgramFiles64Folder" ?>
+    <?define Win64="yes" ?>
+    <?define Arch="(x64)" ?>
+    <?endif?>
+
+    <!-- 
+        WixUI_Advanced defaults to "[ProgramFilesFolder][ApplicationFolderName]", which is wrong for x64 applications.
+        fix the path with an override. https://github.com/wixtoolset/issues/issues/5908
+    -->
+    <CustomAction Id="WixSetDefaultPerMachineFolderPerArch" Property="WixPerMachineFolder" Value="[$(var.ProgramFilesFolder)][ApplicationFolderName]" Execute="immediate"/>
+
+    <InstallExecuteSequence>
+        <Custom Action="WixSetDefaultPerMachineFolderPerArch" Before="WixSetPerMachineFolder" />
+    </InstallExecuteSequence>
+    <InstallUISequence>
+        <Custom Action="WixSetDefaultPerMachineFolderPerArch" Before="WixSetPerMachineFolder" />
+    </InstallUISequence>
+    <!-- ################### END WORK_AROUND ########################## -->
+
+</Include>
