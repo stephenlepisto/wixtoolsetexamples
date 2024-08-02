@@ -45,8 +45,11 @@
         <Icon Id="icon.ico" SourceFile="..\res\SimpleApp.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
-        <Feature Id="Main">
+        <Feature Id="Main" Title="SimpleApp" AllowAbsent="no" ConfigurableDirectory="INSTALLFOLDER" AllowAdvertise="no" Description="The core elements that must be installed">
             <ComponentGroupRef Id="Components" />
+        </Feature>
+        <Feature Id="Docs" Title="Docs" AllowAbsent="yes" Description="Documentation for the core element">
+            <ComponentRef Id="SimpleAppDocs"/>
         </Feature>
     </Package>
 </Wix>

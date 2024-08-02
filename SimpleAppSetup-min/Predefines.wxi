@@ -47,6 +47,7 @@
     <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
     <?define UpgradeCode = "860C381D-74FF-4D21-AF39-1449DD2A9E9B" ?>
     <?endif?>
+    <?define AppDocsGUID = "378CAEA0-A845-4751-9FEC-ED29B973EC68" ?>
 
     <!-- Complete name of the application that appears everywhere -->
     <?define Name = "$(var.AppName)$(var.PlatformInName)$(var.ProgramConfig)"?>
