@@ -5,6 +5,7 @@
     </WixVariables>
     <DefineConstants>
     </DefineConstants>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutputPath>..\build\setup\x64\Release\</OutputPath>

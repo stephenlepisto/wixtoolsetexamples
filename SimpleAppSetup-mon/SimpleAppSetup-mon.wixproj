@@ -1,6 +1,7 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.1">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutputPath>..\build\setup\x64\Debug\</OutputPath>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutputPath>..\build\setup\x64\Release\</OutputPath>
