@@ -1,26 +1,79 @@
+<!--
+    Define all the Components for this install package.  Components are the
+    smallest unit that can be installed.  Components can be collected together
+    in a ComponentGroup and treated as a single Component.  Components and
+    ComponentGroups cannot be nested.
+    
+    Strings containing square brackets ('[' ']') are in strings that are treated
+    as Formatted Text types (a Windows Installer type.  See
+    https://learn.microsoft.com/en-us/windows/win32/msi/formatted).
+    
+    Strings containing $() are a WiX construct and will be replaced by the
+    contents of the variable or property described therein (for example,
+    $(var.VARIABLE) or $(var.PROJECTNAME.PROPERTY)).  For project properties,
+    the project being referenced must be added to the WiX project as a project
+    dependency. All variables and property names are case-sensitive.
+    
+    Wix Documentation for:
+    - Component: https://wixtoolset.org/docs/schema/wxs/component/
+    - ComponentGroup: https://wixtoolset.org/docs/schema/wxs/componentgroup/
+    - File: https://wixtoolset.org/docs/schema/wxs/file/
+    - Fragment: https://wixtoolset.org/docs/schema/wxs/fragment/
+    - RegistryValue: https://wixtoolset.org/docs/schema/wxs/registryvalue/
+    - RemoveFolder: https://wixtoolset.org/docs/schema/wxs/removefolder/
+    - Shortcut: https://wixtoolset.org/docs/schema/wxs/shortcut/
+-->
+
+<!--
+    Bring in globally defined variables for this project.
+    These are accessed with $(var.NAME).
+-->
 <?include Predefines.wxi ?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <ComponentGroup Id="Components" Directory="INSTALLFOLDER">
             <Component Guid="$(var.ProductComponentGUID)">
+                <!-- The file represented by this component -->
                 <File Id="SimpleAppexe" Source="$(var.SimpleApp.TargetPath)" Checksum="yes" />
+                <!-- Start Menu shortcut to run the program -->
                 <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Advertise="no"
                     Icon="icon.ico" Name="$(var.Name)"
                     Description="Launch $(var.Name) application"
                     Target="[#SimpleAppexe]"
                     WorkingDirectory="INSTALLFOLDER" />
+                <!-- Start Menu shortcut to uninstall the program -->
                 <Shortcut Id="UninstallProduct" Directory="ApplicationProgramsFolder" Advertise="no"
                     Icon="icon.ico"
                     Name="$(var.Name) uninstall"
                     Description="Uninstalls $(var.Name)"
                     Target="[System64Folder]msiexec.exe"
                     Arguments="/x [ProductCode]" />
+                <!--
+                    Program folder to remove during uninstall.
+                    INSTALLFOLDER defined in Folders.wxs.
+                -->
                 <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
+                <!--
+                    Start Menu folder to remove during uninstall.
+                    ApplicationProgramsFolder defined in Folders.wxs.
+                -->
                 <RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+                <!--
+                    Define the key path for the parent component.  If the key
+                    path is not present, the component is not installed;
+                    otherwise, if the key path is present, the installer
+                    performs an upgrade, repair, or remove.
+
+                    Note: A key path must be unique across all components.
+                -->
                 <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
             </Component>
         </ComponentGroup>
+        <!--
+            The key path for this component is the directory/subdirectory name
+            of this component.
+        -->
         <Component Id="SimpleAppDocs" Directory="INSTALLFOLDER" Subdirectory="Docs" KeyPath="yes" Guid="$(var.AppDocsGUID)">
             <File Id="readmetxt" Source="$(var.SimpleApp.ProjectDir)\README.txt" Checksum="yes" Vital="no" />
         </Component>

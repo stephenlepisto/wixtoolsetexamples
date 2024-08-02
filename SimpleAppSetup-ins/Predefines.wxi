@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    7/26/2024 (slepisto):
     - This needs to be included in all .wxs files that reference the variables.
-    - Generated new GUIDs for ProductComponentGUID and UpgradeCode for both the
-      32-bit and 64-bit versions (total of four GUIDs).
+    - For each install package project, generate new GUIDs for
+      ProductComponentGUID and UpgradeCode for both the
+      32-bit and 64-bit versions (total of four GUIDs), along with AppDocsGUID
+      (one GUID).
       
       Note: Once set, the UpgradeCode should never change, allowing each new
-      version of the setup package to upgrade an existing package.
+      version of the setup package to upgrade an existing package with that
+      UpgradeCode.
+      
+    Wix Documentation for:
+    - Preprocessor commands: https://wixtoolset.org/docs/tools/preprocessor/
+    - Include: https://wixtoolset.org/docs/schema/wxs/include/
 -->
 
 <Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
+    <!--
+        The productVersion.wxi file can be machine-generated, which is why it
+        is in a separate file.  For example, I wrote a script to read the
+        version information from the application and then write out
+        productVersion.wxi.
+    -->
     <?include productVersion.wxi ?>
 
     <!--
         The type of the installer.  Need this to distinguish different install
-        packages and to allow each example to be installed side-by-side.  This
-        suffix needs to be applied to the SimpleApp's TargetName property as well.
+        packages and to allow each example to be installed side-by-side.
             min  (Minimal)
             ins  (InstallDir)
             adv  (Advanced)
@@ -25,14 +36,20 @@
     -->
     <?define InstallType = "ins"?>
 
+    <!--
+        The AppName variable is built from the Simple App's target name property
+        appended by the install type to render a unique name for this installer.
+    -->
     <?define AppName = "$(var.SimpleApp.TargetName)-$(var.InstallType)" ?>
-    <?define Manufacturer = "Accursed Toys" ?>
+    <?define Manufacturer = "Stephen Lepisto" ?>
     <?if $(var.Configuration) = Debug?>
+    <!-- Debug builds get "-Debug" as part of the name -->
     <?define ProgramConfig = "-Debug"?>
     <?else?>
     <?define ProgramConfig = ""?>
     <?endif?>
     <?if $(var.Platform) = x64 ?>
+    <!-- Application name gets "-64bit" added for 64-bit builds. -->
     <?define PlatformInName = "-64bit"?>
     <?define Win64 = "yes" ?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
@@ -40,6 +57,7 @@
     <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
     <?define UpgradeCode = "2E133644-3EDB-4113-A1BA-25996CD316F4" ?>
     <?else?>
+    <!-- Application name gets "-32bit" added for 32-bit builds. -->
     <?define PlatformInName = "-32bit"?>
     <?define Win64 = "no" ?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
@@ -49,13 +67,23 @@
     <?endif?>
     <?define AppDocsGUID = "097ACF5F-08C3-43DA-98BE-4316FF38031D" ?>
 
-    <!-- Complete name of the application that appears everywhere -->
+    <!--
+        Complete name of the application that appears everywhere.
+        Guarantees the name is unique across all the setup project examples.
+    -->
     <?define Name = "$(var.AppName)$(var.PlatformInName)$(var.ProgramConfig)"?>
     
     <!-- Name of the folder that appear in the Start Menu -->
     <?define StartupMenuName = "$(var.AppName)"?>
 
-    <!-- Name of the package (used in the installer and in the Apps and Features list -->
+    <!--
+        Name of the package (used in the installer and in the Apps and Features
+        list.
+
+        Note that the product version is added to the name: This way, the
+        version of the product is visible in the Apps and Features list as well
+        as throughout the installer dialog process.
+    -->
     <?define PackageName = "$(var.Name) $(var.ProductVersion)"?>
 
     <!-- Name of the application folder in which the program is installed -->

@@ -1,14 +1,29 @@
 ﻿<!--
-    7/25/2024 (slepisto):
-    - Needed to use NuGet to add WiX.Toolset.ui.wixext 5.0.1 to the SimpleAppSetup
-      project.
-      
+    Note: Need to use NuGet Package Manager in Visual Studio to add
+      WiX.Toolset.ui.wixext 5.0.1 to the WiX project file.  This should install
+      (if necessary) and add a PackageReference to the project file.
+    
+    Wix Documentation for:
+    - ComponentGroupRef: https://wixtoolset.org/docs/schema/wxs/componentgroupref/
+    - ComponentRef: https://wixtoolset.org/docs/schema/wxs/componentref/
+    - Feature: https://wixtoolset.org/docs/schema/wxs/feature/
+    - Icon: https://wixtoolset.org/docs/schema/wxs/icon/
+    - MajorUpgrade: https://wixtoolset.org/docs/schema/wxs/majorupgrade/
+    - Media: https://wixtoolset.org/docs/schema/wxs/media/
+    - Package: https://wixtoolset.org/docs/schema/wxs/package/
+    - Property: https://wixtoolset.org/docs/schema/wxs/property/
+    - UIRef: https://wixtoolset.org/docs/schema/wxs/uiref/
+    - WixVariable: https://wixtoolset.org/docs/schema/wxs/wixvariable/
+-->
+
+<!--
+    Bring in globally defined variables for this project.
+    These are accessed with $(var.NAME).
 -->
 <?include Predefines.wxi ?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
     <!--
-        slepisto:
         The package name is used throughout the installer to refer to the product
         being installed.  It is also used in the Apps and Features list of
         installed programs.  It binds to the variable, !(bind.Property.ProductName).
@@ -16,38 +31,65 @@
     <Package Name="$(var.PackageName)" Manufacturer="$(var.Manufacturer)" Version="$(var.ProductVersion)" UpgradeCode="$(var.UpgradeCode)">
         <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
         <!--
-            slepisto:
             This makes sure the .cab file is embedded in the .msi file;
             otherwise, the .cab file is external and must be moved around with
             the .msi file.
         -->
         <Media Id="1" Cabinet="SimpleApp.cab" EmbedCab="yes" />
 
+        <!--
+            Set the overall type of install dialog that WiX will use as a
+            template.  Requires the WiX.Toolset.ui.wixext package reference to
+            be in place to build successfully.
+            Note: One template does not use the InstallDirectory attribute so
+            we can't really move the Id to the Predefines.wxi file.
+            
+            INSTALLFOLDER is defined in Folders.wxs.
+        -->
         <ui:WixUI Id="WixUI_Minimal" InstallDirectory="INSTALLFOLDER" />
+
+        <!-- Add a reference to all the messages produced by the installer. -->
         <UIRef Id="WixUI_ErrorProgressText" />
 
-        <!-- If I ever allow user to override install path, I need this to populate field -->
-        <!--<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />--> <!-- Don't think I need this because of the InstallDirectory attribute above -->
         <!-- Automatically select acceptance of license -->
         <Property Id="LicenseAccepted" Value="1" />
+
         <!--
-            slepisto:
-            Although I can use LibreOffice Writer to edit the .rtf file, it
-            apparently does not save it in a format that WiX/Windows Installer
-            can load.
+            Note: LibreOffice Writer can create .rtf files, but it's apparently
+            not saved in a format that WiX/Windows Installer can load.
+            I do not know if Microsoft Word can save an .rtf file that will
+            load in WiX/Windows Installer (one online comment suggests it can).
+            I used WordPad to successfully create the .rtf file.
         -->
         <WixVariable Id="WixUILicenseRtf" Value="..\res\LICENSE.rtf" />
+        
+        <!-- Also referred to as the banner image that fills the background -->
         <WixVariable Id="WixUIDialogBmp" Value="..\res\setup_dialogimage.bmp" />
+
+        <!-- Also referred to as the header image that goes across the top -->
         <WixVariable Id="WixUIBannerBmp" Value="..\res\setup_bannerimage.bmp" />
 
-        <!--Add Icon and ARPPRODUCTICON (the installer icon). 
-            ref.: http://wixtoolset.org/documentation/manual/v3/howtos/ui_and_localization/configure_arp_appearance.html -->
+        <!--
+            Add Icon and ARPPRODUCTICON (the installer icon).
+            Note: ARPPRODUCTICON = Add/Remove Program Product Icon
+            This icon is visible in the Windows Apps and Features list.
+        -->
         <Icon Id="icon.ico" SourceFile="..\res\SimpleApp.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
+        <!-- ######## Describe the Features that can be installed ######## -->
+        <!--
+            The main feature cannot be optional (AllowAbsent="no") and is always
+            installed.
+        -->
         <Feature Id="Main" Title="SimpleApp" AllowAbsent="no" ConfigurableDirectory="INSTALLFOLDER" AllowAdvertise="no" Description="The core elements that must be installed">
             <ComponentGroupRef Id="Components" />
         </Feature>
+        
+        <!--
+            This feature is optional (AllowAbsent="yes") - when a Feature list
+            is available; otherwise, this will always get installed.
+        -->
         <Feature Id="Docs" Title="Docs" AllowAbsent="yes" Description="Documentation for the core element">
             <ComponentRef Id="SimpleAppDocs"/>
         </Feature>

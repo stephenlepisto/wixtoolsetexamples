@@ -1,32 +1,51 @@
+<!--
+    Describe all the folders needed by the install package during installation.
+    If there are nested folders, use nested Directory tags.
+    
+    Note: StandardDirectory was introduced in WiX 4, while Standard Directory
+    ID, ProgramFiles6432Folder, was introduced in WiX 5.
+   
+    Wix Documentation for:
+    - Directory: https://wixtoolset.org/docs/schema/wxs/directory/
+    - Fragment: https://wixtoolset.org/docs/schema/wxs/fragment/
+    - StandardDirectory: https://wixtoolset.org/docs/schema/wxs/standarddirectory/
+      - Standard Directory IDs: https://wixtoolset.org/docs/schema/wxs/standarddirectorytype/
+-->
+
+<!--
+    Bring in globally defined variables for this project.
+    These are accessed with $(var.NAME).
+-->
 <?include Predefines.wxi ?>
 
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
     <Fragment>
         <StandardDirectory Id="ProgramFiles6432Folder">
             <!--
-                7/25/2024 (slepisto):
                 This dictates the name of the folder where the application file
-                is stored.  32-bit and 64-bit versions end up in different root
-                folders (due to the ProgramFiles6432Folder ID above), so a
-                simplified name is okay.  So use $(var.InstallFolderName) instead
-                of !(bind.Property.ProductName).  Also, add a '\' between the
-                Manufacturer and the application folder name.
+                is to be installed.  32-bit and 64-bit versions end up in
+                different root folders (due to the ProgramFiles6432Folder ID
+                above), so a simplified name is okay.  So use
+                $(var.InstallFolderName) instead of !(bind.Property.ProductName).
+                Also, add a '\' between the Manufacturer and the application
+                folder name.
             
-                This is configurable in Predefines.wxi.
+                INSTALLFOLDER is defined in Predefines.wxi.
                 
-                Note: I think bind.Property.ProductName comes from <Package Name="">.
+                Note: bind.Property.ProductName comes from <Package Name="">.
             -->
             <Directory Id="INSTALLFOLDER" Name="!(bind.Property.Manufacturer)\$(var.InstallFolderName)" />
         </StandardDirectory>
         <StandardDirectory Id="ProgramMenuFolder">
             <!--
-                slepisto:
-                This dictates the name of the folder that appears in the Start menu.
-                Since 32-bit and 64-bit versions of this application can be installed
-                at the same time, it seems simpler to gather them under a common
-                folder name so use var.StartupMenuName instead of var.Name.
+                This dictates the name of the folder that appears in the Start
+                Menu.  Since 32-bit and 64-bit versions of this application can
+                be installed at the same time, it seems simpler to gather them
+                under a common folder name so use var.StartupMenuName instead
+                of var.Name.  This assumes the shortcut name of the 32-bit and
+                64-bit versions are unique.
             
-                This is configurable in Predefines.wxi.
+                StartupMenuName is defined in Predefines.wxi.
             -->
             <Directory Id="ApplicationProgramsFolder" Name="$(var.StartupMenuName)" />
         </StandardDirectory>
