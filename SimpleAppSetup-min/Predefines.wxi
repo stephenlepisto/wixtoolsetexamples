@@ -34,7 +34,7 @@
             mon  (Mondo)
             fea  (FeatureTree)
     -->
-    <?define InstallType = "-min"?>
+    <?define InstallType = "min"?>
 
     <!--
         The AppName variable is built from the Simple App's target name property
