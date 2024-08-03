@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38498F87-CD7B-4C42-A42E-6DEF4A4F0F84}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		LICENSE.md = LICENSE.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "SimpleAppSetup-adv", "SimpleAppSetup-adv\SimpleAppSetup-adv.wixproj", "{82203736-6875-4094-B98C-6228338B5DE6}"
