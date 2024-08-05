@@ -57,37 +57,28 @@ The Minimal example has no control while the Mondo example has maximum control.
 Note: These examples are for Windows only.
 
 1. Windows 10 or later
+
+   Developed on Windows 10.
+
 2. Visual Studio 2022
-5. Git for Windows
+   
+   any edition; this project was developed on the Community Edition.
+
+3. Git for Windows
    
    Download from https://gitforwindows.org/
-6. .Net 8.0 SDK
-   
-   There are two ways to get the dotnet command line tool:
-   1. Use the Visual Studio Installer to install the .Net 8.0 SDK
-   2. Download the .Net 8.0 SDK directly from https://dotnet.microsoft.com/en-us/download/dotnet.
-3. WiX toolset
-   
-   From a command prompt, type the following:
-
-   `dotnet tool install --global wix`
 
 4. WiX.Toolset.ui.wixext NuGet package
+
+   This will be automatically installed when the wixtoolsetexamples solution is
+   first loaded into Visual Studio on a system without the WiX extension
+   already installed.
    
-   The NuGet Package Manager is installed with Visual Studio and available
-   from within Visual Studio (`Tools` > `NuGet Package Manager` > `Manage NuGet Packages for Solution...`)
+5. WiX.Toolset.SDK NuGet package
+   
+   The WiX.Toolset.ui.wixext depends on this and is automatically installed
+   when that extension is installed.
 
-   _Note: The WiX.Toolset.ui.wixext must be installed using the NuGet Package
-   Manager for the setup project; there is no way to use the dotnet command
-   line tool for this._
-
-   QUESTION: How does someone get the extension onto their system after downloading
-   the source for wixtoolsetexamples?  Do they have to use the NuGet Package Manager
-   on a dummy project?  Or can NuGet figure out that it has to download the
-   extension automatically?
-
-Once the .Net SDK is installed, the path to the dotnet command line tool is
-added to the System path for use from any command line prompt.
 
 ## Building the Code
 1. Open a Windows Command Prompt and create a directory where to download the
