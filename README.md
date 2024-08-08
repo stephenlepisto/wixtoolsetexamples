@@ -9,8 +9,8 @@ by Stephen P. Lepisto
 This repository contains a single Visual Studio 2022 solution with six projects.
 Five of the projects are WiX-based installer/setup projects and the sixth
 project is the payload installed by the setup projects.  The five setup projects
-are examples of the five template types provided by the WiX Toolset extension
-for Visual Studio.  Namely:
+are examples of the five template types provided by the `WiX.Toolset.ui.wixext`
+extension for the WiX application.  Namely:
 1. Advanced
 2. FeatureTree
 3. InstallDir
@@ -18,37 +18,42 @@ for Visual Studio.  Namely:
 5. Mondo
 
 These examples do _not_ show any customized dialog boxes and they do _not_ show
-the use of custom actions (I have never needed those in my use cases).  However,
-WiX Toolset does support customized dialog boxes and custom actions.  The WiX
-Toolset documentation covers those two topics fairly well.
+the use of custom actions.  However, WiX Toolset does support customized dialog
+boxes and custom actions.  The WiX Toolset documentation covers those two
+topics fairly well (start here: https://wixtoolset.org/docs/intro/).
 
 WiX is a relatively thin wrapper around the Windows Installer technology that
 results in .MSI files.  The Windows Installer is a complex web of a relational
-database that connects a wide variety of elements that control installation of
-even the most complex product.  In fact, the Windows Installer grew out of the
-effort of delivering Microsoft Office in the early 2000's.
+databases that connects a wide variety of elements that in turn control
+installation of even the most complex product.  In fact, the Windows Installer
+grew out of the effort for delivering Microsoft Office in the early 2000's,
+with its numerous products each with dozens of optional features.
 
 However, creating a .MSI file of even a small size can be a daunting task and
 is easily a full-time job for any product that has just a few components.  The
-WiX toolset aims to make creating robust and useful install packages in a
+WiX Toolset aims to make creating robust and useful install packages in a
 fraction of the time without needing to create any databases.  Well, at least
 not needing to directly create any databases.
 
 WiX accomplishes this by using XML to describe the components, features, and
 various dialog boxes used in a .MSI file in XML.  At a high level, there is a
-\<Package> tag that contains one or more \<Feature> tags and each feature
-contains one or more \<Component> tags.  A \<Component> tag contains \<File>,
-\<Shortcut>, and \<RegistryValue> tags that describe individual files.  And the
-\<Directory> tag describes the directory layout of the installed product.
+`<Package>` tag that contains one or more `<Feature>` tags and each feature
+contains one or more `<Component>` tags.  A `<Component>` tag contains `<File>`,
+`<Shortcut>`, and `<RegistryValue>` tags that describe individual files.  And the
+`<Directory>` and `<StandardDirectory>` tags describe the directory layout of the
+installed product.
 
 There is much, much more to WiX than that.  The five template types provided by
 WiX should have sufficient functionality for most install packages with just a
-little effort.  The examples show various ways to install an application with
-an optional set of documentation.  All the examples accomplish the same thing:
-Install the (Really) Simple App along with a README.txt file in a Docs/
-sub-directory (representing the optional "documentation").  Each example
+little effort.  The examples here show various ways to install an application
+with an optional set of documentation.  All the examples accomplish the same
+thing: Install the (Really) Simple App along with a `README.txt` file in a
+`Docs/` sub-directory (representing the optional "documentation").  Each example
 provides different levels of control for the user over the install process.
 The Minimal example has no control while the Mondo example has maximum control.
+
+The files in each of the setup projects have lots of comments to point out
+interesting features.
 
 # How to Build
 
@@ -58,11 +63,11 @@ Note: These examples are for Windows only.
 
 1. Windows 10 or later
 
-   Developed on Windows 10.
+   _Note: Developed on Windows 10_
 
 2. Visual Studio 2022
    
-   any edition; this project was developed on the Community Edition.
+   *Note: any edition; this project was developed on the Community Edition*
 
 3. Git for Windows
    
@@ -70,13 +75,13 @@ Note: These examples are for Windows only.
 
 4. WiX.Toolset.ui.wixext NuGet package
 
-   This will be automatically installed when the wixtoolsetexamples solution is
+   This is automatically installed when the `wixtoolsetexamples` solution is
    first loaded into Visual Studio on a system without the WiX extension
    already installed.
    
 5. WiX.Toolset.SDK NuGet package
    
-   The WiX.Toolset.ui.wixext depends on this and is automatically installed
+   The `WiX.Toolset.ui.wixext` depends on this and is automatically installed
    when that extension is installed.
 
 
@@ -108,7 +113,9 @@ Note: These examples are for Windows only.
    SimpleAppSetup-min.msi
    SimpleAppSetup-mon.msi
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   The suffices on the main filename indicate the type of install process
+   Where `<Platform>` is "x86" or "x64" and `<Configuration>` is "Debug" or "Release".
+
+   The suffixes on the main filename indicate the type of install process
    contained within.
 
    | Abbreviation | Description          |
@@ -181,22 +188,32 @@ There are three basic ways to uninstall SimpleApp after it is installed.
    and finally, click the Finish button to close the installer.
 
 # The WiX Install Type Templates
+_WiXUI dialog library documentation: https://wixtoolset.org/docs/tools/wixext/wixui/_
+
 Running an install file created by WiX provides several variations on the
-installation process.  The five templates described below provide a variety of
-installation experiences that should cover most use cases for installing a
-product.
+installation process that all follow the Windows Wizard format (one or more
+pages that are moved through with a "Next" button).  The five templates
+described below provide a variety of installation experiences that should cover
+most use cases for installing a product.
 
 Note that with WiX, it is possible to customize every dialog box and to add
 custom actions, if desired.  The usual process is to take an existing template
 and then tweak it for the desired use case.  The Wix Toolset Examples presented
 here do _not_ show that level of customization nor the use of custom actions.
 
+By replacing the WiX Standard Bootstrapper Application extension (which supports
+a customizable Wizard-style interface), a completely custom user interface can
+be created but that is way beyond the scope of these examples and requires
+detailed knowledge of how the Microsoft Installer technology works. See
+https://wixtoolset.org/docs/tools/burn/wixstdba/ for a little more about
+replacing the standard WiX Standard Bootstrapper Application extension.
+
 ## Advanced Template
 __IMPORTANT! Based on the comments in the WixUI_Advanced.wxs template file,
 the Advanced template is subject to changes in the future that are likely to be
 incompatible with the current form.  However, this warning has been in the code
-since March of 2014 so either the warning was never updated or the promised
-changes have never materialized.__
+since March of 2014 so either the warning was never removed/updated or the
+hinted-at changes have never materialized.__
 
 Provides a one-click installer with the following pages:
 1. EULA Page with Advanced button and Install button
