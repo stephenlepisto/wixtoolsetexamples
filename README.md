@@ -88,7 +88,8 @@ Note: These examples are for Windows only.
    md work
    cd work
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-2. Use git to get the examples from GitHub.com:
+   Change `%HOMEPATH%` to a more preferred root folder, if desired.
+2. Use git to get the example source code from GitHub.com:
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cmd}
    git https://github.com/stephenlepisto/wixtoolsetexamples.git
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -143,10 +144,41 @@ the application files will step on each other.
 All of the installers, except Minimal, supports changing what is installed
 (well, only the documentation is optional so that can be added or removed
 separately) by running the installer again.  All installers support the Repair
-option.  And, of course, all installer support the Remove option.
+option.  And, of course, all installers support the Remove option.
 
 All installers support a silent install and uninstall.  To see the command line
 options, run the installer from the command line with the `/?` switch.
+
+## To Install SimpleApp
+There are three ways to launch the installer file:
+1. Open Windows Explorer, navigate to the folder containing the installer file
+   (for example, `%HOMEPATH%\work\wixtoolsetexamples\build\setup\bin\x64\Release\en-US\`)
+   and either double-click on the file (for example, `SimpleAppSetup-min.msi`)
+   or right-click on the file and select __Install__
+2. From a Command Prompt, navigate to the folder containing the installer file,
+   type the name of the installer file, and press Enter (you can also just
+   enter the full path to the installer file).  For example:
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cd %HOMEPATH%\work\wixtoolsetexamples\build\setup\bin\x64\Release\en-US\
+   SimpleAppSetup-min.msi
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. From a Command Prompt, run the msiexec program with the path to the installer
+   file as the argument.  For example:
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   msiexec %HOMEPATH%\work\wixtoolsetexamples\build\setup\bin\x64\Release\en-US\SimpleAppSetup-min.msi
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## To Uninstall SimpleApp
+There are three basic ways to uninstall SimpleApp after it is installed.
+1. Right-click on the Windows Start icon and select _Apps and Features_, then
+   type "SimpleApp" in the search box, click on the found entry and click the
+   _Uninstall_ button.
+2. Open the Start menu and find the SimpleApp folder icon, open it, and select
+   the, for example, "SimpleApp-min-64bit uninstall" to launch the shortcut.
+   Click The "Yes" button to uninstall.
+3. Run the installer file (see the __To Install SimpleApp__ section), click the
+   Next button, click the Remove button, and click the Remove button (again),
+   and finally, click the Finish button to close the installer.
 
 # The WiX Install Type Templates
 Running an install file created by WiX provides several variations on the
