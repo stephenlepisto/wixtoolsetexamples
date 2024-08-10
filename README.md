@@ -267,3 +267,9 @@ Provides a one-click installer with the following pages:
 The Typical setup type installs only those features that are considered
 required, while the Complete setup type installs all features even if they are
 considered optional.
+
+# Customized Installer
+This installer (SimpleAppSetup-cus) is a copy of the InstallDir installer but
+with the following customizations:
+1. A checkbox is added to the ExitDialog that, when checked, causes the
+   application to be launched when the Finish button is clicked.
