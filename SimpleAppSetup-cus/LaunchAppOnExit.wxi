@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <!--
+        Implement a checkbox that appears on the last page of the installer
+        Wizard that, when checked, launches the newly-installed application.
+            
+        Takes advantage of a built-in "optional checkbox" that is normally
+        hidden until its text (ID WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT) has
+        been set.  Then create a custom action to run the application and
+        finally schedule when the custom action is triggered.
+    -->
+
+    <!--
+        We can use WiX substitution variables in this value.  However, if
+        the desire is to use MSI variables such as [ProductName], we need
+        to use <SetProperty> to set the value of the checkbox text so the
+        MSI variables can be properly replaced at runtime.
+            
+        Note: The WiX substitution variables are substituted at compile
+        time.  If the WiX variable contains an MSI variable such as
+        [ProductName] then the product name will not be substituted and the
+        text will read "Launch [ProductName] on exit".  Use <SetProperty>
+        in all cases to avoid this problem.
+    -->
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"
+              Value="DUMMY TEXT"
+        />
+
+    <!--
+        Use a SetProperty to change the value of the property so we can
+        reference our variables or MSI variables.
+    -->
+    <SetProperty Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"
+                 Value ="Launch $(var.StartupMenuName) on exit"
+                 After="FindRelatedProducts"
+                 Sequence="ui"
+        />
+
+    <!--
+        Define the custom action that launches the program.  Make sure the
+        working directory is set in case the launched application expects
+        that (Directory=).  Use the ExeCommand= to pass the command line to
+        use to run the program, plus any arguments.  Execute immediately
+        and don't wait for the application to end (allows the installer to
+        exit cleanly).  Run the application as the current user.
+    -->
+    <CustomAction Id="LaunchApplication"
+        Directory="INSTALLFOLDER"
+        ExeCommand="[#SimpleAppexe] --pause"
+        Execute="immediate"
+        Return="asyncNoWait"
+        Impersonate="yes" />
+
+    <!--
+        Define when the custom action needs to run.
+            
+        In this case, run the custom action when the Finish button on the
+        ExitDialog is clicked but only if the optional checkbox is checked
+        and the application is not already installed.
+    -->
+    <UI>
+        <Publish Dialog="ExitDialog"
+            Control="Finish"
+            Event="DoAction"
+            Value="LaunchApplication"
+            Condition="WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed">
+        </Publish>
+    </UI>
+
+</Include>

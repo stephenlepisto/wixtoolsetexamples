@@ -77,6 +77,17 @@
         <Icon Id="icon.ico" SourceFile="..\res\SimpleApp.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
+        <!--################################################################-->
+        <!--
+            Implement a checkbox that appears on the last page of the installer
+            Wizard that, when checked, launches the newly-installed application.
+        -->
+
+        <?include LaunchAppOnExit.wxi ?>
+        
+        <!--################################################################-->        
+
+
         <!-- ######## Describe the Features that can be installed ######## -->
         <!--
             The main feature cannot be optional (AllowAbsent="no") and is always

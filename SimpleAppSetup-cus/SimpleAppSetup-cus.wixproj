@@ -13,6 +13,7 @@
     <OutputPath>..\build\setup\x86\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="LaunchAppOnExit.wxi" />
     <Content Include="Predefines.wxi" />
     <Content Include="productVersion.wxi" />
   </ItemGroup>
