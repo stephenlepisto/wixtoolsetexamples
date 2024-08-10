@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    - This needs to be included in all .wxs files that reference the variables.
+    - For each install package project, generate new GUIDs for
+      ProductComponentGUID and UpgradeCode for both the
+      32-bit and 64-bit versions (total of four GUIDs), along with AppDocsGUID
+      (one GUID).
+      
+      Note: Once set, the UpgradeCode should never change, allowing each new
+      version of the setup package to upgrade an existing package with that
+      UpgradeCode.
+      
+    Wix Documentation for:
+    - Preprocessor commands: https://wixtoolset.org/docs/tools/preprocessor/
+    - Include: https://wixtoolset.org/docs/schema/wxs/include/
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <!--
+        The productVersion.wxi file can be machine-generated, which is why it
+        is in a separate file.  For example, I wrote a script to read the
+        version information from the application and then write out
+        productVersion.wxi.
+    -->
+    <?include productVersion.wxi ?>
+
+    <!--
+        The type of the installer.  Need this to distinguish different install
+        packages and to allow each example to be installed side-by-side.
+            min  (Minimal)
+            ins  (InstallDir)
+            adv  (Advanced)
+            mon  (Mondo)
+            fea  (FeatureTree)
+            cus  (Custom InstallDir)
+    -->
+    <?define InstallType = "cus"?>
+
+    <!--
+        The AppName variable is built from the Simple App's target name property
+        appended by the install type to render a unique name for this installer.
+    -->
+    <?define AppName = "$(var.SimpleApp.TargetName)-$(var.InstallType)" ?>
+    <?define Manufacturer = "Stephen Lepisto" ?>
+    <?if $(var.Configuration) = Debug?>
+    <!-- Debug builds get "-Debug" as part of the name -->
+    <?define ProgramConfig = "-Debug"?>
+    <?else?>
+    <?define ProgramConfig = ""?>
+    <?endif?>
+    <?if $(var.Platform) = x64 ?>
+    <!-- Application name gets "-64bit" added for 64-bit builds. -->
+    <?define PlatformInName = "-64bit"?>
+    <?define Win64 = "yes" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?define ProductComponentGUID = "CCDC7AEC-1A16-4F78-8901-F5156C998EA5"?>
+    <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+    <?define UpgradeCode = "83493EAF-8F81-4D61-B8E1-E92BDB2090C1" ?>
+    <?else?>
+    <!-- Application name gets "-32bit" added for 32-bit builds. -->
+    <?define PlatformInName = "-32bit"?>
+    <?define Win64 = "no" ?>
+    <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?define ProductComponentGUID = "30040EA3-6DB7-4DF9-9884-0D42E884DE2B"?>
+    <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+    <?define UpgradeCode = "ACF71A21-52DE-4588-B969-90BDE3F045B1" ?>
+    <?endif?>
+    <?define AppDocsGUID = "A66F1772-289B-4A55-966C-E39977A8EDB4" ?>
+
+    <!--
+        Complete name of the application that appears everywhere.
+        Guarantees the name is unique across all the setup project examples.
+    -->
+    <?define Name = "$(var.AppName)$(var.PlatformInName)$(var.ProgramConfig)"?>
+    
+    <!-- Name of the folder that appear in the Start Menu -->
+    <?define StartupMenuName = "$(var.AppName)"?>
+
+    <!--
+        Name of the package (used in the installer and in the Apps and Features
+        list.
+
+        Note that the product version is added to the name: This way, the
+        version of the product is visible in the Apps and Features list as well
+        as throughout the installer dialog process.
+    -->
+    <?define PackageName = "$(var.Name) $(var.ProductVersion)"?>
+
+    <!-- Name of the application folder in which the program is installed -->
+    <?define InstallFolderName = "$(var.AppName)"?>
+
+</Include>

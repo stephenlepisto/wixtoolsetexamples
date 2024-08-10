@@ -1,0 +1,4 @@
+<!-- This file is expected to be included by another WiX file -->
+<Include>
+<?define ProductVersion="1.0.0"?>
+</Include>
