@@ -2,10 +2,17 @@
 //
 
 #include <iostream>
+#include <conio.h>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Hello World!" << std::endl;
+    std::cout << "Press a key to exit" << std::endl;
+    int key = _getch();
+    if (key == 0)
+    {
+        key = _getch();
+    }
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
