@@ -41,6 +41,7 @@
                     Icon="icon.ico" Name="$(var.Name)"
                     Description="Launch $(var.Name) application"
                     Target="[#SimpleAppexe]"
+                    Arguments="--pause"
                     WorkingDirectory="APPLICATIONFOLDER" />
                 <!-- Start Menu shortcut to uninstall the program -->
                 <Shortcut Id="UninstallProduct" Directory="ApplicationProgramsFolder" Advertise="no"
