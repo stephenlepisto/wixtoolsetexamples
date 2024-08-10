@@ -4,14 +4,33 @@
 #include <iostream>
 #include <conio.h>
 
-int main()
+void PauseBeforeExit()
 {
-    std::cout << "Hello World!" << std::endl;
     std::cout << "Press a key to exit" << std::endl;
     int key = _getch();
     if (key == 0)
     {
         key = _getch();
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    bool pauseBeforeExit = false;
+
+    if (argc == 2)
+    {
+        if (strcmp(argv[1], "--pause") == 0)
+        {
+            pauseBeforeExit = true;
+        }
+    }
+
+    std::cout << "Hello World!" << std::endl;
+
+    if (pauseBeforeExit)
+    {
+        PauseBeforeExit();
     }
 }
 
