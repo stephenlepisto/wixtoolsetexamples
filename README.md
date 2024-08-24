@@ -69,6 +69,9 @@ Note: These examples are for Windows only.
    
    *Note: any edition; this project was developed on the Community Edition*
 
+   Visual Studio Extensions:
+   - "HeatWave for VS2022" Extension (for WiX v4 project templates)
+ 
 3. Git for Windows
    
    Download from https://gitforwindows.org/
