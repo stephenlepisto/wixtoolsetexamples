@@ -30,9 +30,12 @@
     <!--
         Use a SetProperty to change the value of the property so we can
         reference our variables or MSI variables.
+        
+        See Package.en-us.wxl for how the "LaunchAppOnExitPrompt" localization
+        string is defined.
     -->
     <SetProperty Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT"
-                 Value ="Launch $(var.StartupMenuName) on exit"
+                 Value ="!(loc.LaunchAppOnExitPrompt)"
                  After="FindRelatedProducts"
                  Sequence="ui"
         />

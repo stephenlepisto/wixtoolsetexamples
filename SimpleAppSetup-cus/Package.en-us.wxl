@@ -1,8 +1,16 @@
 ﻿<!--
 This file contains the declaration of all the localizable strings.
 -->
+<!--
+    Bring in globally defined variables for this project.
+    These are accessed with $(var.NAME).
+-->
+<?include Predefines.wxi ?>
+
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
 
-  <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />
+    <String Id="LaunchAppOnExitPrompt" Value="Launch $(var.StartupMenuName) on exit" />
+    
+    <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />
 
 </WixLocalization>
