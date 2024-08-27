@@ -137,8 +137,9 @@ considered optional.  Shortcuts are added to the Start menu in a folder, where
 one shortcut runs the program while the other shortcut uninstalls the
 application.
 
-The remaining five projects are the various WiX install projects built around
-the five WiX Toolset Install Type Templates as described below.  The goal of
+The remaining six projects are the various WiX install projects built around
+the five WiX Toolset Install Type Templates as described below plus one setup
+project that contains two customizations (also described below).  The goal of
 each install project is to install the SimpleApp application and the (optional)
 associated documentation file.  Building everything builds a 32-bit application
 with a 32-bit installer, a 64-bit application with a 64-bit installer, in a
@@ -272,7 +273,37 @@ required, while the Complete setup type installs all features even if they are
 considered optional.
 
 # Customized Installer
-This installer (SimpleAppSetup-cus) is a copy of the InstallDir installer but
+This installer (`SimpleAppSetup-cus`) is a copy of the InstallDir installer but
 with the following customizations:
-1. A checkbox is added to the ExitDialog that, when checked, causes the
+1. A checkbox is added to the `ExitDialog` that, when checked, causes the
    application to be launched when the Finish button is clicked.
+2. A checkbox is added to the `VerifyReadyDlg` that, when checked, causes a
+   shortcut to the application to be added to the user's desktop during
+   installation.
+
+## ExitDialog Checkbox
+The first customization takes advantage of an optional checkbox that is already
+part of the ExitDialog.  By defining the text for the checkbox (by setting the
+property `WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT`), the checkbox is shown.  A
+custom action is attached to the Finish button to trigger the launch of the
+application when the installer exits.
+
+## Desktop Shortcut Checkbox
+The second customization requires adding a new checkbox and that requires
+modifying an existing dialog box to create a new dialog box with a new ID.  And
+that, in turn, requires modifying the parent installer template (in this case,
+`WixUI_InstallDir`) to use the new dialog box.  And that requires giving the
+template a new ID as well.
+
+Download the `VerifyReadyDlg.wxs` and `WixUI_InstallDir.wxs` files from the WiX
+Toolset source (in this case, v5.0.1 of the WiX Toolset at
+https://github.com/wixtoolset/wix/blob/v5.0.1/src/ext/UI/wixlib) and move them
+into the `SimpleAppSetup-cus/` directory.  Finally, modify `Package.wxs` to
+refer to the new WixUI_InstallDir template.  This has already been done for this
+project.
+
+Add the desktop shortcut as a separate component so that it can be conditionally
+included if the new checkbox is selected when the installer is run.  If the
+desktop shortcut is installed, it will be automatically uninstalled when the
+application is uninstalled.
+
