@@ -50,6 +50,7 @@
                     Description="Uninstalls $(var.Name)"
                     Target="[System64Folder]msiexec.exe"
                     Arguments="/x [ProductCode]" />
+               
                 <!--
                     Program folder to remove during uninstall.
                     INSTALLFOLDER defined in Folders.wxs.
@@ -69,6 +70,29 @@
                     Note: A key path must be unique across all components.
                 -->
                 <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+            </Component>
+
+            <Component Directory="DesktopFolder" Condition="ADDDESKTOPSHORTCUT">
+                <!--
+                    Desktop shortcut to run the program
+                    
+                    Note: The target uses [!SimpleAppexe] to get around an ICE69
+                    warning complaining that [#SimpleAppexe] references a file
+                    in another component (but both components are in the same
+                    feature; if the components were in separate features, the
+                    warning would become an error).  Using [!] apparently
+                    bypasses the ICE69 check and, in this case, the target is a
+                    file not a registry value so [!] is basically treated the
+                    same as [#].  Yes, this is a hack.
+                -->
+                <Shortcut Id="ApplicationDesktopShortcut" Directory="DesktopFolder" Advertise="no"
+                    Icon="icon.ico" Name="$(var.Name)"
+                    Description="Launch $(var.Name) application"
+                    Target="[!SimpleAppexe]"
+                    Arguments="--pause"
+                    WorkingDirectory="INSTALLFOLDER" />
+                <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="shortcut_installed" Type="integer" Value="1" KeyPath="yes" />
+
             </Component>
         </ComponentGroup>
         <!--

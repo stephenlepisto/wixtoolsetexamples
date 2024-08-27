@@ -9,6 +9,8 @@ This file contains the declaration of all the localizable strings.
 
 <WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="en-US">
 
+    <String Id="AddDesktopShortcut_Text" Value="Add a shortcut to the desktop"/>
+    
     <String Id="LaunchAppOnExitPrompt" Value="Launch $(var.StartupMenuName) on exit" />
     
     <String Id="DowngradeError" Value="A newer version of [ProductName] is already installed." />

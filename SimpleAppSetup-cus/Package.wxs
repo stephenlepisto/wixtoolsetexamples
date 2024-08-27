@@ -46,7 +46,7 @@
             
             INSTALLFOLDER is defined in Folders.wxs.
         -->
-        <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+        <ui:WixUI Id="WixUI_InstallDir_CustomVerifyDlg" InstallDirectory="INSTALLFOLDER" />
 
         <!-- Add a reference to all the messages produced by the installer. -->
         <UIRef Id="WixUI_ErrorProgressText" />
