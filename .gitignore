@@ -4,3 +4,4 @@ build/
 obj/
 *.pdn
 *.user
+*.aps
