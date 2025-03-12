@@ -133,14 +133,14 @@ interesting features.
    The suffixes on the base filename indicate the type of install process
    contained within.
 
-   | Abbreviation | Description                 |
-   | ------------ | --------------------------- |
-   | `adv`        | Advanced template           |
-   | `cus`        | InstallTree Custom template |
-   | `fea`        | FeatureTree template        |
-   | `ins`        | InstallTree template        |
-   | `min`        | Minimal template            |
-   | `mon`        | Mondo template              |
+   | Abbreviation | Description                |
+   | ------------ | -------------------------- |
+   | `adv`        | Advanced template          |
+   | `cus`        | InstallDir Custom template |
+   | `fea`        | FeatureTree template       |
+   | `ins`        | InstallDir template        |
+   | `min`        | Minimal template           |
+   | `mon`        | Mondo template             |
 
 # The WiX Toolset Examples
 The first project in the wixtoolsetexamples solution is the `SimpleApp` project.
