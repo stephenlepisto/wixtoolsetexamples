@@ -4,8 +4,34 @@ by Stephen P. Lepisto
 ### Copyright (c) 2024 Stephen P. Lepisto
 ### Licensed under the MIT License.  See LICENSE.md for details.
 
+-------------------------------------------------------------------------------
 
-# Overview
+# Table of Contents
+- [Overview](#overview)
+  - [Wix in Brief](#wix-in-brief)
+  - [In This Repository](#in-this-repository)
+- [How to Build](#how-to-build)
+  - [Minimum Requirements](#minimum-requirements)
+  - [Building the Code](#building-the-code)
+- [The WiX Toolset Examples](#toolset-examples)
+  - [To Install SimpleApp](#install-simpleapp)
+  - [To Uninstall SimpleApp](#uninstall-simpleapp)
+- [The WiX Install Type Templates](#install-type-templates)
+  - [Advanced Template](#advanced-template)
+  - [FeatureTree Template](#featuretree-template)
+  - [InstallDir Template](#installdir-template)
+  - [Minimal Template](#minimal-template)
+  - [Mondo Template](#mondo-template)
+- [Customized Installer](#customized-installer)
+  - [ExitDialog Checkbox](#exit-dialog-checkbox)
+  - [Desktop Shortcut Checkbox](#desktop-shortcut-dialog)
+- [Adding a WiX Install Project From Scratch](#adding-wix-install-project)
+  - [Requirements](#create-requirements)
+  - [Adding the Install Project](#add-install-project)
+
+-------------------------------------------------------------------------------
+
+# Overview {#overview}
 This repository contains a single Visual Studio 2022 solution with seven projects.
 Six of the projects are WiX-based installer/setup projects and the last project
 is the payload installed by the setup projects.  Five setup projects are examples
@@ -23,7 +49,7 @@ explains these but, for me, the documentation lacks some clear examples of how
 to use each template and how to implement custom features in those templates.
 That is what these example setup projects attempt to cover in more detail.
 
-## WiX in Brief
+## WiX in Brief {#wix-in-brief}
 WiX is a relatively thin wrapper around the Microsoft Installer technology that
 results in .MSI files, the core install package for Windows.  The Microsoft
 Installer is a complex web of relational databases that connects a wide variety
@@ -52,7 +78,7 @@ bundles or custom Bootstrapper Applications (the user interface that drives the
 installation).  See https://wixtoolset.org/docs/tools/burn/ to start learning
 about Burn Bundles.
 
-## In This Repository
+## In This Repository {#in-this-repository}
 The five template types provided by WiX should have sufficient functionality for
 most install packages with just a little effort.  The examples here show various
 ways to install an application with an optional set of documentation.  All the
@@ -67,9 +93,9 @@ into WiX).
 The files in each of the setup projects have lots of comments to point out
 interesting features.
 
-# How to Build
+# How to Build {#how-to-build}
 
-## Minimum Requirements
+## Minimum Requirements {#minimum-requirements}
 
 1. Windows 10 or later
 
@@ -81,6 +107,12 @@ interesting features.
 
    Visual Studio Extensions:
    - "HeatWave for VS2022" Extension (for WiX v4 project templates)
+
+     Install from VS2022 by clicking on `Extensions` > `Manage Extensions` then
+     browsing for the "HeatWave for VS2022" from FireGiant, select the extension
+     and click the Install button at the top of the description.  Restart
+     VS2022 to complete the installation.  These examples were generated with
+     "HeatWave for VS2022 v5.0.1".
  
 3. Git for Windows
    
@@ -98,7 +130,7 @@ interesting features.
    when that extension is installed.
 
 
-## Building the Code
+## Building the Code {#building-the-code}
 1. Open a Windows Command Prompt and create a directory where to download the
    WiX Toolset Examples repository.   For example:
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cmd}
@@ -142,7 +174,7 @@ interesting features.
    | `min`        | Minimal template           |
    | `mon`        | Mondo template             |
 
-# The WiX Toolset Examples
+# The WiX Toolset Examples {#toolset-examples}
 The first project in the wixtoolsetexamples solution is the `SimpleApp` project.
 This is a C++ console application that prints "Hello World!".  It has separate
 documentation consisting of a single `README.txt` file.  The documentation is
@@ -173,7 +205,7 @@ option.  And, of course, all installers support the Remove option.
 All installers support a silent install and uninstall.  To see the command line
 options, run the installer from the command line with the `/?` switch.
 
-## To Install SimpleApp
+## To Install SimpleApp {#install-simpleapp}
 There are three ways to launch the installer file:
 1. Open Windows Explorer, navigate to the folder containing the installer file
    (for example, `%HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\`)
@@ -192,7 +224,7 @@ There are three ways to launch the installer file:
    msiexec %HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\SimpleAppSetup-min.msi
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-## To Uninstall SimpleApp
+## To Uninstall SimpleApp {#uninstall-simpleapp}
 There are three basic ways to uninstall SimpleApp after it is installed.
 1. Right-click on the Windows Start icon and select _Apps and Features_, then
    type "SimpleApp" in the search box, click on the found entry and click the
@@ -204,7 +236,7 @@ There are three basic ways to uninstall SimpleApp after it is installed.
    Next button, click the Remove button, and click the Remove button (again),
    and finally, click the Finish button to close the installer.
 
-# The WiX Install Type Templates
+# The WiX Install Type Templates {#install-type-templates}
 _WiXUI dialog library documentation: https://wixtoolset.org/docs/tools/wixext/wixui/_
 
 Running an install file created by WiX provides several variations on the
@@ -225,7 +257,7 @@ detailed knowledge of how the Microsoft Installer technology works. See
 https://wixtoolset.org/docs/tools/burn/wixstdba/ for a little more about
 replacing the standard WiX Standard Bootstrapper Application extension.
 
-## Advanced Template
+## Advanced Template {#advanced-template}
 __IMPORTANT! Based on the comments in the WixUI_Advanced.wxs template file,
 the Advanced template is subject to changes in the future that are likely to be
 incompatible with the current form.  However, this warning has been in the code
@@ -244,7 +276,7 @@ Provides a one-click installer with the following pages:
 3. Clicking the Install button shows the Installation Process page and then
 4. The Exit page
 
-## FeatureTree Template
+## FeatureTree Template {#featuretree-template}
 Provides an installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -253,7 +285,7 @@ Provides an installer with the following pages:
 5. Clicking the Install button shows the Installation Process page and then
 6. The Exit page
  
-## InstallDir Template
+## InstallDir Template {#installdir-template}
 Provides an installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -262,13 +294,13 @@ Provides an installer with the following pages:
 5. Clicking the Install button shows the Installation Process page and then
 6. The Exit page
  
-## Minimal Template
+## Minimal Template {#minimal-template}
 Provides a one-click installer with the following pages:
 1. Welcome page combined with the EULA and the Install button
 2. Clicking the Install button shows the Installation Process page and then
 3. The Exit page
  
-## Mondo Template
+## Mondo Template {#mondo-template}
 Provides a one-click installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -286,7 +318,7 @@ The Typical setup type installs only those features that are considered
 required, while the Complete setup type installs all features even if they are
 considered optional.
 
-# Customized Installer
+# Customized Installer {#customized-installer}
 This installer (`SimpleAppSetup-cus`) is a copy of the InstallDir installer but
 with the following customizations:
 1. A checkbox is added to the `ExitDialog` (the "Exit" page) that, when checked,
@@ -295,14 +327,14 @@ with the following customizations:
    when checked, causes a shortcut to the application to be added to the user's
    desktop during installation.
 
-## ExitDialog Checkbox
+## ExitDialog Checkbox {#exit-dialog-checkbox}
 The first customization takes advantage of an optional checkbox that is already
 part of the `ExitDialog`.  By defining the text for the checkbox (by setting the
 property `WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT`), the checkbox is shown.  A
 custom action is attached to the Finish button to trigger the launch of the
 application when the installer exits.
 
-## Desktop Shortcut Checkbox
+## Desktop Shortcut Checkbox {#desktop-shortcut-dialog}
 The second customization requires adding a new checkbox and that requires
 modifying an existing dialog box to create a new dialog box with a new ID.  And
 that, in turn, requires modifying the parent installer template (in this case,
@@ -324,3 +356,80 @@ in a `<Component>` tag that can be made conditional).  If the desktop shortcut
 is installed, it will be automatically uninstalled when the application is
 uninstalled.
 
+# Adding a WiX Install Project From Scratch {#adding-wix-install-project}
+Here is the process to add a WiX Install project to your own solution in Visual
+Studio 2022.
+
+## Requirements {#create-requirements}
+  - Visual Studio 2022
+
+    Visual Studio Extensions:
+      - "HeatWave for VS2022" Extension (for WiX v4 project templates)
+
+## Adding the Install Project {#add-install-project}
+
+### Add an install project
+1. In VS2022, in Solution Explorer, right-click on the existing solution
+    (with a project to install) and select `Add` > `New Project`.
+2. In the search box, type "Heatwave" to show the HeatWave-based project
+    project types (these correspond to Wix Toolkit v4).
+    _Note: If you look for Wix, you will see the templates for Wix Toolkit
+    v3, which are the older type._
+3. Select the `MSI Package` and click `Next`.
+4. Enter a project name and verify where the project is to be created
+    (typically in the solution directory in a directory named after the
+    project).  Then click `Create` to create the project.
+5. Done.
+     
+### Update project properties
+1. Right-click on the new install project and select `Properties`.
+2. Click the `Build` tab (on the left), then change the `Output` field to the
+   path for each platform and configuration.
+   
+   _Note: Visual Studio macros don't work here; the path must be hardcoded
+   to fit the platform and configuration._
+3. Close the install project's properties window.
+4. Done.
+
+### Add Wix.Toolset.ui.wixext NuGet package
+1. In VS2022, select `Tools` > `NuGet Package Manager` > `Manage NuGet Packages
+    for Solution`.
+2. Click the `Browse` tab on the left and enter "Wix.Toolset.ui.wixext" in
+    the search box.
+3. Click on the "Wix.Toolset.ui.wixext" extension.
+    
+    Make sure the `include prerelease` checkbox is cleared!
+4. On the right, select the install project then select the
+    "Latest Stable vx.x" from the second dropdown under the projects box.
+5. Click the `Install` button then click the `Apply` button (if shown).
+6. Done.
+
+### Add Project Dependencies
+1. In Solution Explorer, right-click on the install project and select
+    `Add Project Reference`.
+2. Select the project(s) that produce output to be added to the installer
+    and click OK.
+3. Done.
+
+### Confirm Success
+1. In Solution Explorer, under the install project, make sure the
+    following items are part of the install project:
+
+    - Dependencies
+    - ExampleComponents.wxs
+    - Folders.wxs
+    - Package-en-us.wxl
+    - Package.wxs
+2. Expand the "Dependencies" scope to examine what is there:
+   1. Expand the "Packages" scope.  There should be the following package:
+   
+      `Wix.Toolset.ui.wixext (vx.y.z)` (were x.y.z is the version installed, for
+      example, `v5.0.1`)
+   2. Expand the "Projects" scope.  There should be the name of the project
+      that produces the file(s) to be included in the installer.
+   3. Expand the "Wix Extensions" scope.  There should be the following
+      extension:
+      
+      `Wix Toolset.UI`
+   4. Close the "Dependencies" scope.
+3. Done.
