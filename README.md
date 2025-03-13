@@ -7,31 +7,31 @@ by Stephen P. Lepisto
 -------------------------------------------------------------------------------
 
 # Table of Contents
-- [Overview](#overview)
-  - [Wix in Brief](#wix-in-brief)
-  - [In This Repository](#in-this-repository)
-- [How to Build](#how-to-build)
-  - [Minimum Requirements](#minimum-requirements)
-  - [Building the Code](#building-the-code)
-- [The WiX Toolset Examples](#toolset-examples)
-  - [To Install SimpleApp](#install-simpleapp)
-  - [To Uninstall SimpleApp](#uninstall-simpleapp)
-- [The WiX Install Type Templates](#install-type-templates)
-  - [Advanced Template](#advanced-template)
-  - [FeatureTree Template](#featuretree-template)
-  - [InstallDir Template](#installdir-template)
-  - [Minimal Template](#minimal-template)
-  - [Mondo Template](#mondo-template)
-- [Customized Installer](#customized-installer)
-  - [ExitDialog Checkbox](#exit-dialog-checkbox)
-  - [Desktop Shortcut Checkbox](#desktop-shortcut-dialog)
-- [Adding a WiX Install Project From Scratch](#adding-wix-install-project)
-  - [Requirements](#create-requirements)
-  - [Adding the Install Project](#add-install-project)
+- [Overview](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#overview)
+  - [Wix in Brief](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#wix-in-brief)
+  - [In This Repository](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#in-this-repository)
+- [How to Build](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#how-to-build)
+  - [Minimum Requirements](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#minimum-requirements)
+  - [Building the Code](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#building-the-code)
+- [The WiX Toolset Examples](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#the-wix-toolset-examples)
+  - [To Install SimpleApp](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#to-install-simpleapp)
+  - [To Uninstall SimpleApp](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#to-uninstall-simpleapp)
+- [The WiX Install Type Templates](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#the-wix-install-type-templates)
+  - [Advanced Template](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#advanced-template)
+  - [FeatureTree Template](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#featuretree-template)
+  - [InstallDir Template](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#installdir-template)
+  - [Minimal Template](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#minimal-template)
+  - [Mondo Template](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#mondo-template)
+- [Customized Installer](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#customized-installer)
+  - [ExitDialog Checkbox](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#exitdialog-checkbox)
+  - [Desktop Shortcut Checkbox](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#desktop-shortcut-checkbox)
+- [Adding a WiX Install Project From Scratch](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#adding-a-wix-install-project-from-scratch)
+  - [Requirements](https://github.com/stephenlepisto/wixtoolsetexamples/blob/main/README.md#requirements)
+  - [Adding the Install Project](#adding-the-install-project)
 
 -------------------------------------------------------------------------------
 
-# Overview {#overview}
+# Overview
 This repository contains a single Visual Studio 2022 solution with seven projects.
 Six of the projects are WiX-based installer/setup projects and the last project
 is the payload installed by the setup projects.  Five setup projects are examples
@@ -49,7 +49,7 @@ explains these but, for me, the documentation lacks some clear examples of how
 to use each template and how to implement custom features in those templates.
 That is what these example setup projects attempt to cover in more detail.
 
-## WiX in Brief {#wix-in-brief}
+## WiX in Brief
 WiX is a relatively thin wrapper around the Microsoft Installer technology that
 results in .MSI files, the core install package for Windows.  The Microsoft
 Installer is a complex web of relational databases that connects a wide variety
@@ -78,7 +78,7 @@ bundles or custom Bootstrapper Applications (the user interface that drives the
 installation).  See https://wixtoolset.org/docs/tools/burn/ to start learning
 about Burn Bundles.
 
-## In This Repository {#in-this-repository}
+## In This Repository
 The five template types provided by WiX should have sufficient functionality for
 most install packages with just a little effort.  The examples here show various
 ways to install an application with an optional set of documentation.  All the
@@ -93,9 +93,9 @@ into WiX).
 The files in each of the setup projects have lots of comments to point out
 interesting features.
 
-# How to Build {#how-to-build}
+# How to Build
 
-## Minimum Requirements {#minimum-requirements}
+## Minimum Requirements
 
 1. Windows 10 or later
 
@@ -130,7 +130,7 @@ interesting features.
    when that extension is installed.
 
 
-## Building the Code {#building-the-code}
+## Building the Code
 1. Open a Windows Command Prompt and create a directory where to download the
    WiX Toolset Examples repository.   For example:
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cmd}
@@ -174,7 +174,7 @@ interesting features.
    | `min`        | Minimal template           |
    | `mon`        | Mondo template             |
 
-# The WiX Toolset Examples {#toolset-examples}
+# The WiX Toolset Examples
 The first project in the wixtoolsetexamples solution is the `SimpleApp` project.
 This is a C++ console application that prints "Hello World!".  It has separate
 documentation consisting of a single `README.txt` file.  The documentation is
@@ -205,7 +205,7 @@ option.  And, of course, all installers support the Remove option.
 All installers support a silent install and uninstall.  To see the command line
 options, run the installer from the command line with the `/?` switch.
 
-## To Install SimpleApp {#install-simpleapp}
+## To Install SimpleApp
 There are three ways to launch the installer file:
 1. Open Windows Explorer, navigate to the folder containing the installer file
    (for example, `%HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\`)
@@ -224,7 +224,7 @@ There are three ways to launch the installer file:
    msiexec %HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\SimpleAppSetup-min.msi
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-## To Uninstall SimpleApp {#uninstall-simpleapp}
+## To Uninstall SimpleApp
 There are three basic ways to uninstall SimpleApp after it is installed.
 1. Right-click on the Windows Start icon and select _Apps and Features_, then
    type "SimpleApp" in the search box, click on the found entry and click the
@@ -236,7 +236,7 @@ There are three basic ways to uninstall SimpleApp after it is installed.
    Next button, click the Remove button, and click the Remove button (again),
    and finally, click the Finish button to close the installer.
 
-# The WiX Install Type Templates {#install-type-templates}
+# The WiX Install Type Templates
 _WiXUI dialog library documentation: https://wixtoolset.org/docs/tools/wixext/wixui/_
 
 Running an install file created by WiX provides several variations on the
@@ -257,7 +257,7 @@ detailed knowledge of how the Microsoft Installer technology works. See
 https://wixtoolset.org/docs/tools/burn/wixstdba/ for a little more about
 replacing the standard WiX Standard Bootstrapper Application extension.
 
-## Advanced Template {#advanced-template}
+## Advanced Template
 __IMPORTANT! Based on the comments in the WixUI_Advanced.wxs template file,
 the Advanced template is subject to changes in the future that are likely to be
 incompatible with the current form.  However, this warning has been in the code
@@ -276,7 +276,7 @@ Provides a one-click installer with the following pages:
 3. Clicking the Install button shows the Installation Process page and then
 4. The Exit page
 
-## FeatureTree Template {#featuretree-template}
+## FeatureTree Template
 Provides an installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -285,7 +285,7 @@ Provides an installer with the following pages:
 5. Clicking the Install button shows the Installation Process page and then
 6. The Exit page
  
-## InstallDir Template {#installdir-template}
+## InstallDir Template
 Provides an installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -294,13 +294,13 @@ Provides an installer with the following pages:
 5. Clicking the Install button shows the Installation Process page and then
 6. The Exit page
  
-## Minimal Template {#minimal-template}
+## Minimal Template
 Provides a one-click installer with the following pages:
 1. Welcome page combined with the EULA and the Install button
 2. Clicking the Install button shows the Installation Process page and then
 3. The Exit page
  
-## Mondo Template {#mondo-template}
+## Mondo Template
 Provides a one-click installer with the following pages:
 1. Welcome page with Next button
 2. EULA page with Next button
@@ -318,7 +318,7 @@ The Typical setup type installs only those features that are considered
 required, while the Complete setup type installs all features even if they are
 considered optional.
 
-# Customized Installer {#customized-installer}
+# Customized Installer
 This installer (`SimpleAppSetup-cus`) is a copy of the InstallDir installer but
 with the following customizations:
 1. A checkbox is added to the `ExitDialog` (the "Exit" page) that, when checked,
@@ -327,14 +327,14 @@ with the following customizations:
    when checked, causes a shortcut to the application to be added to the user's
    desktop during installation.
 
-## ExitDialog Checkbox {#exit-dialog-checkbox}
+## ExitDialog Checkbox
 The first customization takes advantage of an optional checkbox that is already
 part of the `ExitDialog`.  By defining the text for the checkbox (by setting the
 property `WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT`), the checkbox is shown.  A
 custom action is attached to the Finish button to trigger the launch of the
 application when the installer exits.
 
-## Desktop Shortcut Checkbox {#desktop-shortcut-dialog}
+## Desktop Shortcut Checkbox
 The second customization requires adding a new checkbox and that requires
 modifying an existing dialog box to create a new dialog box with a new ID.  And
 that, in turn, requires modifying the parent installer template (in this case,
@@ -356,17 +356,17 @@ in a `<Component>` tag that can be made conditional).  If the desktop shortcut
 is installed, it will be automatically uninstalled when the application is
 uninstalled.
 
-# Adding a WiX Install Project From Scratch {#adding-wix-install-project}
+# Adding a WiX Install Project From Scratch
 Here is the process to add a WiX Install project to your own solution in Visual
 Studio 2022.
 
-## Requirements {#create-requirements}
+## Requirements
   - Visual Studio 2022
 
     Visual Studio Extensions:
       - "HeatWave for VS2022" Extension (for WiX v4 project templates)
 
-## Adding the Install Project {#add-install-project}
+## Adding the Install Project
 
 ### Add an install project
 1. In VS2022, in Solution Explorer, right-click on the existing solution
