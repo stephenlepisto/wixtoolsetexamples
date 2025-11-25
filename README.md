@@ -139,9 +139,9 @@ interesting features.
    cd work
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
    Change "`%HOMEPATH%`" to a more preferred root folder, if desired.
-2. Use git to get the example source code from GitHub.com:
+2. Use `git clone` to get the example source code from GitHub.com:
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~{.cmd}
-   git https://github.com/stephenlepisto/wixtoolsetexamples.git
+   git clone https://github.com/stephenlepisto/wixtoolsetexamples.git
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 3. Start Visual Studio 2022, select the option to load an existing solution,
    then navigate to where the wixtoolsetexamples were downloaded and load the 
