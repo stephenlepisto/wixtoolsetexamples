@@ -1,7 +1,7 @@
 # WiX Toolset Examples
 by Stephen P. Lepisto
 
-### Copyright (c) 2024 Stephen P. Lepisto
+### Copyright (c) 2024-2025 Stephen P. Lepisto
 ### Licensed under the MIT License.  See LICENSE.md for details.
 
 -------------------------------------------------------------------------------
@@ -118,11 +118,21 @@ interesting features.
    
    Download from https://gitforwindows.org/
 
-4. WiX.Toolset.ui.wixext NuGet package version 5.0.1
+4. WiX.Toolset.ui.wixext NuGet package version 5.0.2
 
    This is automatically installed when the `wixtoolsetexamples` solution is
    first loaded into Visual Studio on a system without the WiX extension
    already installed.
+
+   _Note: __as of version 6__, the WiX Toolset requires an Open Source Maintainer
+   Fee (see https://robmensching.com/blog/posts/2025/02/26/introducing-the-open-source-maintenance-fee/).
+   For projects that use the WiX Toolset and are intended to generate income,
+   the Maintainer Fee is required.  This is a reasonable fee and is likely to
+   become more prevalent across open source projects in the years to come.
+   See also: https://opensourcemaintenancefee.org/._
+
+   The WiX Toolset Examples project does not generate any income but the build
+   requirements are holding with WiX Toolset version 5 for now.
    
 5. WiX.Toolset.SDK NuGet package
    
@@ -221,11 +231,19 @@ There are three ways to launch the installer file:
 3. From a Command Prompt, run the msiexec program with the path to the installer
    file as the argument.  For example:
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   msiexec %HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\SimpleAppSetup-min.msi
+   msiexec /i %HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\SimpleAppSetup-min.msi
    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+   _Note: Using msiexec directly allows for generating a log file that is useful
+   for debugging.  For full logging, add the following to the end of the above
+   call to msiexec:_
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /lv*vx install.log
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 ## To Uninstall SimpleApp
-There are three basic ways to uninstall SimpleApp after it is installed.
+There are four basic ways to uninstall SimpleApp after it is installed.
 1. Right-click on the Windows Start icon and select _Apps and Features_, then
    type "SimpleApp" in the search box, click on the found entry and click the
    _Uninstall_ button.
@@ -235,6 +253,17 @@ There are three basic ways to uninstall SimpleApp after it is installed.
 3. Run the installer file (see the __To Install SimpleApp__ section), click the
    Next button, click the Remove button, and click the Remove button (again),
    and finally, click the Finish button to close the installer.
+4. Use msiexec to perform an uninstall:
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   msiexec /x %HOMEPATH%\work\wixtoolsetexamples\build\setup\x64\Release\en-US\SimpleAppSetup-min.msi
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   _Note: Using msiexec directly allows for generating a log file that is useful
+   for debugging.  For full logging, add the following to the end of the above
+   call to msiexec:_
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   /lv*vx uninstall.log
+   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # The WiX Install Type Templates
 _WiXUI dialog library documentation: https://wixtoolset.org/docs/tools/wixext/wixui/_
@@ -372,8 +401,9 @@ Studio 2022.
 1. In VS2022, in Solution Explorer, right-click on the existing solution
     (with a project to install) and select `Add` > `New Project`.
 2. In the search box, type "Heatwave" to show the HeatWave-based project
-    project types (these correspond to Wix Toolkit v4).
-    _Note: If you look for Wix, you will see the templates for Wix Toolkit
+    types (these correspond to Wix Toolkit v4).
+
+    _Note: If you look for "Wix", you will see the templates for Wix Toolkit
     v3, which are the older type._
 3. Select the `MSI Package` and click `Next`.
 4. Enter a project name and verify where the project is to be created
@@ -401,6 +431,9 @@ Studio 2022.
     Make sure the `include prerelease` checkbox is cleared!
 4. On the right, select the install project then select the
     "Latest Stable vx.x" from the second dropdown under the projects box.
+
+    _Note: The WiX Toolset Examples use Wix.Toolset.ui.wixext v5.0.2 and not
+    the latest version._
 5. Click the `Install` button then click the `Apply` button (if shown).
 6. Done.
 
@@ -433,3 +466,9 @@ Studio 2022.
       `Wix Toolset.UI`
    4. Close the "Dependencies" scope.
 3. Done.
+
+_Note: The WiX Toolset Examples use a file called Predefines.wxi to define
+elements in a single location that are used in several places in the other
+files.  If you use this approach, each of the setup project files needs to
+include the Predefines.wxi file.  Naturally, see the WiX Toolset Examples for
+how this is done._

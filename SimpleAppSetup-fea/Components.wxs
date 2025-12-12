@@ -34,41 +34,83 @@
     <Fragment>
         <ComponentGroup Id="Components" Directory="INSTALLFOLDER">
             <Component Guid="$(var.ProductComponentGUID)">
-                <!-- The file represented by this component -->
-                <File Id="SimpleAppexe" Source="$(var.SimpleApp.TargetPath)" Checksum="yes" />
+                <!--
+                    The file represented by this component.
+                    
+                    The file's location is used as the key path.  If the key
+                    path is not present, the component is considered as not
+                    being installed; otherwise, if the key path is present, the
+                    installer performs an upgrade, repair, or remove.
+                    
+                    Note: During uninstall, the file is removed by the Windows
+                    Installer.  In addition, the file's parent directories are
+                    removed so long as the parent directories are empty.  There
+                    is no need to explicitly remove the installation directory
+                    in this case.
+                -->
+                <File Id="SimpleAppexe" Source="$(var.SimpleApp.TargetPath)" KeyPath="yes" Checksum="yes" />
+            </Component>
+            <!--
+                Shortcuts need to be defined in their own component so they do
+                not interfere with installation of the application file to a
+                custom location.  Specifically, short cuts somehow interfere
+                with the application file being removed during uninstall.
+                
+                The shortcuts are still installed and uninstalled with the
+                application because it is the ComponentGroup that is associated
+                with the Main feature (in Package.wxs) and that includes all
+                the Components in the ComponentGroup.
+                
+                Note: The Directory value is used on all elements defined in
+                the Component unless an element overrides the value with its
+                own Directory value (not done in this example).
+                
+                Note: The target uses [!SimpleAppexe] to get around an ICE69
+                warning complaining that [#SimpleAppexe] references a file
+                in another component (but both components are in the same
+                feature; if the components were in separate features, the
+                warning would become an error).  Using [!] apparently
+                bypasses the ICE69 check and, in this case, the target is a
+                file not a registry value so [!] is basically treated the
+                same as [#].  Yes, this is a hack.
+                    
+                ApplicationProgramsFolder defined in Folders.wxs.
+            -->
+            <Component Id="Shortcuts" Directory="ApplicationProgramsFolder">
                 <!-- Start Menu shortcut to run the program -->
-                <Shortcut Id="ApplicationStartMenuShortcut" Directory="ApplicationProgramsFolder" Advertise="no"
+                <Shortcut Id="ApplicationStartMenuShortcut" Advertise="no"
                     Icon="icon.ico" Name="$(var.Name)"
                     Description="Launch $(var.Name) application"
-                    Target="[#SimpleAppexe]"
+                    Target="[!SimpleAppexe]"
                     Arguments="--pause"
                     WorkingDirectory="INSTALLFOLDER" />
                 <!-- Start Menu shortcut to uninstall the program -->
-                <Shortcut Id="UninstallProduct" Directory="ApplicationProgramsFolder" Advertise="no"
+                <Shortcut Id="UninstallProduct" Advertise="no"
                     Icon="icon.ico"
                     Name="$(var.Name) uninstall"
                     Description="Uninstalls $(var.Name)"
                     Target="[System64Folder]msiexec.exe"
                     Arguments="/x [ProductCode]" />
                 <!--
-                    Program folder to remove during uninstall.
-                    INSTALLFOLDER defined in Folders.wxs.
-                -->
-                <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
-                <!--
-                    Start Menu folder to remove during uninstall.
-                    ApplicationProgramsFolder defined in Folders.wxs.
-                -->
-                <RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-                <!--
                     Define the key path for the parent component.  If the key
-                    path is not present, the component is not installed;
-                    otherwise, if the key path is present, the installer
-                    performs an upgrade, repair, or remove.
+                    path is not present, the component is considered as not
+                    being installed; otherwise, if the key path is present, the
+                    installer performs an upgrade, repair, or remove.
+                    
+                    Shortcuts require a registry-based key path; the
+                    application's own path can be a key path but that key path
+                    cannot be used with shortcuts.
 
                     Note: A key path must be unique across all components.
                 -->
                 <RegistryValue Root="HKCU" Key="Software\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                <!--
+                    Start Menu folder to remove during uninstall.  This removes
+                    the shortcuts.  For shortcuts, the remove folder step must
+                    be explicitly given, unlike components that contain
+                    explicit files.
+                -->
+                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
             </Component>
         </ComponentGroup>
         <!--
