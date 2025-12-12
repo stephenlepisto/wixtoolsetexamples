@@ -23,16 +23,22 @@
         <StandardDirectory Id="ProgramFiles6432Folder">
             <!--
                 This dictates the name of the folder where the application file
-                is to be installed.  32-bit and 64-bit versions end up in
-                different root folders (due to the ProgramFiles6432Folder ID
-                above), so a simplified name is okay.  So use
-                $(var.InstallFolderName) instead of !(bind.Property.ProductName).
-                Also, add a '\' between the Manufacturer and the application
-                folder name.
-            
-                INSTALLFOLDER is defined in Predefines.wxi.
+                is to be installed by default.  32-bit and 64-bit versions end
+                up in different root folders (due to the ProgramFiles6432Folder
+                ID above), so a simplified name is okay, which means using a
+                variable $(var.InstallFolderName) instead of a property
+                !(bind.Property.ProductName).
                 
-                Note: bind.Property.ProductName comes from <Package Name="">.
+                Also, remember to add a '\' between the Manufacturer and the
+                application folder name since a folder is being defined here.
+                This way, it is possible to install to an entirely different
+                parent folder from C:\Program Files\[Manufacturer] but still
+                use the InstallFolderName as a sub-folder.
+            
+                InstallFolderName is defined in Predefines.wxi.
+                
+                Note: the Manufacturer property comes from the
+                <Package Manufacturer=""> value.
             -->
             <Directory Id="INSTALLFOLDER" Name="!(bind.Property.Manufacturer)\$(var.InstallFolderName)" />
         </StandardDirectory>
