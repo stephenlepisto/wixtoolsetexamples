@@ -64,6 +64,15 @@
                 Note: The Directory value is used on all elements defined in
                 the Component unless an element overrides the value with its
                 own Directory value (not done in this example).
+                
+                Note: Use of [!SimpleAppexe] (instead of [#SimpleAppexe]) gets
+                around warning ICE69, where one component is cross-referencing
+                something in another component and both components are defined
+                in the same feature or component group.  Cross-referencing is
+                generally an error but in the specific case of shortcuts where
+                the shortcut is closely associated with the cross-referenced
+                name, this is a "safe" warning.  Using [!] essentially hides
+                the warning in this specific case.
                     
                 ApplicationProgramsFolder defined in Folders.wxs.
             -->
@@ -72,7 +81,7 @@
                 <Shortcut Id="ApplicationStartMenuShortcut" Advertise="no"
                     Icon="icon.ico" Name="$(var.Name)"
                     Description="Launch $(var.Name) application"
-                    Target="[#SimpleAppexe]"
+                    Target="[!SimpleAppexe]"
                     Arguments="--pause"
                     WorkingDirectory="INSTALLFOLDER" />
                 <!-- Start Menu shortcut to uninstall the program -->
